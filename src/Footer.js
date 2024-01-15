@@ -67,7 +67,7 @@ function Footer() {
         </ul>
       </div>
       <h1>
-        Built By: <a href="#">EYOB SISAY</a>
+      Hana Zewudie 
       </h1>
     </div>
   );
