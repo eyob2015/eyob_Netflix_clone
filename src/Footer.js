@@ -67,7 +67,7 @@ function Footer() {
         </ul>
       </div>
       <h1>
-      Hana Zewudie 
+      THIS CLONE IS MADE BY EYOB SISAY
       </h1>
     </div>
   );
