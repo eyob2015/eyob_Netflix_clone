@@ -24,6 +24,7 @@ function CategoryDetail() {
   const categoryTitles = {
     trending: "Trending Now",
     netflix_originals: "Netflix Originals",
+    popular: "Popular",
     top_rated: "Top Rated",
     action: "Action Movies",
     comedy: "Comedy Movies",
@@ -38,6 +39,7 @@ function CategoryDetail() {
       const baseUrls = {
         trending: `/trending/all/week?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=${pageNum}`,
         netflix_originals: `/discover/tv?api_key=${process.env.REACT_APP_API_KEY}&with_networks=213&page=${pageNum}`,
+        popular: `/movie/popular?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=${pageNum}`,
         top_rated: `/movie/top_rated?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=${pageNum}`,
         action: `/discover/movie?api_key=${process.env.REACT_APP_API_KEY}&with_genres=28&page=${pageNum}`,
         comedy: `/discover/movie?api_key=${process.env.REACT_APP_API_KEY}&with_genres=35&page=${pageNum}`,

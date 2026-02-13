@@ -13,9 +13,11 @@ function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(() => false);
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const profileRef = useRef(null);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,9 +45,35 @@ function Nav() {
       if (profileRef.current && !profileRef.current.contains(e.target)) {
         setProfileOpen(false);
       }
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
     };
     window.addEventListener("click", handleOutside);
+
     return () => window.removeEventListener("click", handleOutside);
+  }, []);
+
+  // Close dropdown when mobile menu opens or route changes
+  useEffect(() => {
+    if (menuOpen) {
+      setDropdownOpen(false);
+      setProfileOpen(false);
+      setNotifOpen(false);
+    }
+  }, [menuOpen]);
+
+  // Close dropdown on Escape
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        setDropdownOpen(false);
+        setProfileOpen(false);
+        setNotifOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   const handleSearch = () => {
@@ -57,6 +85,17 @@ function Nav() {
     }
   };
 
+  const categories = [
+    { key: "netflix_originals", label: "Netflix Originals" },
+    { key: "trending", label: "Trending" },
+    { key: "top_rated", label: "Top Rated" },
+    { key: "action", label: "Action" },
+    { key: "comedy", label: "Comedy" },
+    { key: "horror", label: "Horror" },
+    { key: "romance", label: "Romance" },
+    { key: "documentaries", label: "Documentaries" },
+  ];
+
   return (
     <nav className={`nav ${showBackground ? "nav--scrolled" : ""}`}>
       <div className="nav__container">
@@ -65,9 +104,39 @@ function Nav() {
         </div>
 
         <div className="nav__items">
-          <button className="nav__link" onClick={() => {navigate('/'); setMenuOpen(false);}}>Home</button>
-          <button className="nav__link" onClick={() => {navigate('/category/trending'); setMenuOpen(false);}}>Trending</button>
-          <button className="nav__link" onClick={() => {navigate('/category/popular'); setMenuOpen(false);}}>Popular</button>
+          <button className="nav__link" onClick={() => {navigate('/'); setMenuOpen(false); setDropdownOpen(false); setProfileOpen(false); setNotifOpen(false);}}>Home</button>
+          <button className="nav__link" onClick={() => {navigate('/category/trending'); setMenuOpen(false); setDropdownOpen(false); setProfileOpen(false); setNotifOpen(false);}}>Trending</button>
+          <div
+            className={`nav__dropdown${dropdownOpen ? ' open' : ''}`}
+            ref={dropdownRef}
+            tabIndex={-1}
+            aria-expanded={dropdownOpen}
+          >
+            <button
+              className="nav__link nav__dropdown-toggle"
+              aria-haspopup="true"
+              aria-expanded={dropdownOpen}
+              tabIndex={0}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                setDropdownOpen((s) => !s);
+              }}
+              onFocus={(e) => {
+                // Prevent opening on focus (keyboard tab)
+                e.target.blur();
+              }}
+            >
+              Categories ▾
+            </button>
+            <div className="nav__dropdown-menu" style={{display: dropdownOpen ? 'flex' : 'none'}}>
+              {categories.map((c) => (
+                <button key={c.key} className="nav__dropdown-item" onClick={() => {navigate(`/category/${c.key}`); setMenuOpen(false); setDropdownOpen(false); setProfileOpen(false); setNotifOpen(false);}}>
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="nav__actions">
@@ -123,14 +192,22 @@ function Nav() {
         </button>
 
         <div className={`nav__mobile-menu ${menuOpen ? "open" : ""}`}>
-          <button className="nav__mobile-link" onClick={() => {navigate('/'); setMenuOpen(false);}}>Home</button>
-          <button className="nav__mobile-link" onClick={() => {navigate('/category/trending'); setMenuOpen(false);}}>Trending</button>
-          <button className="nav__mobile-link" onClick={() => {navigate('/category/popular'); setMenuOpen(false);}}>Popular</button>
+          <button className="nav__mobile-link" onClick={() => {navigate('/'); setMenuOpen(false); setDropdownOpen(false); setProfileOpen(false); setNotifOpen(false);}}>Home</button>
+          <button className="nav__mobile-link" onClick={() => {navigate('/category/trending'); setMenuOpen(false); setDropdownOpen(false); setProfileOpen(false); setNotifOpen(false);}}>Trending</button>
+          <button className="nav__mobile-link" onClick={() => {navigate('/category/popular'); setMenuOpen(false); setDropdownOpen(false); setProfileOpen(false); setNotifOpen(false);}}>Popular</button>
+          <div className="nav__mobile-divider" />
+          <div className="nav__mobile-cats">
+            {categories.map((c) => (
+              <button key={c.key} className="nav__mobile-link" onClick={() => {navigate(`/category/${c.key}`); setMenuOpen(false); setDropdownOpen(false); setProfileOpen(false); setNotifOpen(false);}}>
+                {c.label}
+              </button>
+            ))}
+          </div>
           <div className="nav__mobile-divider" />
           <div className="nav__mobile-actions">
-            <button className="nav__mobile-action" onClick={() => setSearchOpen(s => !s)}>Search</button>
-            <button className="nav__mobile-action" onClick={() => setNotifOpen(s => !s)}>Notifications</button>
-            <button className="nav__mobile-action" onClick={() => {navigate('/profile'); setMenuOpen(false);}}>Profile</button>
+            <button className="nav__mobile-action" onClick={() => { setSearchOpen(s => !s); setDropdownOpen(false); setProfileOpen(false); setNotifOpen(false); }}>Search</button>
+            <button className="nav__mobile-action" onClick={() => { setNotifOpen(s => !s); setDropdownOpen(false); setProfileOpen(false); }}>Notifications</button>
+            <button className="nav__mobile-action" onClick={() => {navigate('/profile'); setMenuOpen(false); setDropdownOpen(false); setProfileOpen(false); setNotifOpen(false);}}>Profile</button>
           </div>
         </div>
       </div>
