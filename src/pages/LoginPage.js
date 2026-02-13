@@ -1,12 +1,18 @@
+/**
+ * LoginPage Component
+ * Authentication page for user login
+ * Currently incomplete - feature for future implementation
+ */
+
 // import React, { useState } from "react";
 // import bcrypt from "bcrypt";
-
+//
 // function LoginPage() {
 //   const [email, setEmail] = useState("");
 //   const [password, setPassword] = useState("");
 //   const [error, setError] = useState(null);
 //   const [authenticated, setAuthenticated] = useState(false);
-
+//
 //   const handleSubmit = (e) => {
 //     e.preventDefault();
 //     if (email && password) {
@@ -15,14 +21,14 @@
 //       // Call login API or perform other login logic here
 //       setAuthenticated(true);
 //     } else {
-//       setError(null);
+//       setError("Email and password are required");
 //     }
 //   };
-
+//
 //   const handleLogout = () => {
 //     setAuthenticated(false);
 //   };
-
+//
 //   return (
 //     <div className="login-page">
 //       <h1>Login to your account</h1>
@@ -53,5 +59,5 @@
 //     </div>
 //   );
 // }
-
+//
 // export default LoginPage;
