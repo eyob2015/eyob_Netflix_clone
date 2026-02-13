@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import "./CategoryDetail.css";
 import { useParams, useNavigate } from "react-router-dom";
 import movieService from "../services/movieService";
+import { IMAGE_BASE_URL } from "../constants/apiConstants";
 import Nav from "../components/Nav/Nav";
 import MovieCard from "../components/MovieCard/MovieCard";
 
@@ -188,6 +189,7 @@ function CategoryDetail() {
               <MovieCard
                 movie={movie}
                 mediaType={movie.media_type || mediaType}
+                imageUrl={`${IMAGE_BASE_URL}${movie.poster_path || movie.backdrop_path}`}
               />
             </div>
           ))}

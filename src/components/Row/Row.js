@@ -23,22 +23,32 @@ const Row = React.memo(
 
     const fetchMovies = useCallback(async () => {
       setLoading(true);
+      console.log(`[Row:${title}] Starting fetch from URL:`, fetchUrl);
       try {
         const response = await api.get(fetchUrl);
-        setMovies(response.data.results || []);
+        console.log(`[Row:${title}] Fetch successful, got ${response.data.results?.length || 0} movies`);
+        const movieResults = response.data.results || [];
+        console.log(`[Row:${title}] Setting movies:`, movieResults.length > 0 ? `${movieResults.length} items` : 'empty');
+        setMovies(movieResults);
       } catch (error) {
-        console.error(`Error fetching ${title}:`, error);
+        console.error(`[Row:${title}] Error fetching:`, error.message, error);
+        console.error(`Error details:`, error.response?.status, error.response?.data);
         setMovies([]);
       } finally {
+        console.log(`[Row:${title}] Loading complete`);
         setLoading(false);
       }
     }, [fetchUrl, title]);
 
     useEffect(() => {
+      console.log(`[Row:${title}] useEffect - initialMovies:`, initialMovies ? 'provided' : 'not provided');
       if (!initialMovies) {
+        console.log(`[Row:${title}] Calling fetchMovies`);
         fetchMovies();
+      } else {
+        console.log(`[Row:${title}] Using provided initialMovies`);
       }
-    }, [fetchMovies, initialMovies]);
+    }, [fetchMovies, initialMovies, title]);
 
     const handleTitleClick = () => {
       if (categoryRoute) {
@@ -88,17 +98,23 @@ const Row = React.memo(
           </div>
         ) : (
           <div className="row__posters">
-            {movies.map((movie) => (
-              <MovieCard
-                key={movie.id}
-                movie={movie}
-                isLargeRow={isLargeRow}
-                imageUrl={`${IMAGE_BASE_URL}${
-                  isLargeRow ? movie.poster_path : movie.backdrop_path
-                }`}
-                mediaType={movie.media_type || "movie"}
-              />
-            ))}
+            {movies && movies.length > 0 ? (
+              movies.map((movie) => (
+                <MovieCard
+                  key={movie.id}
+                  movie={movie}
+                  isLargeRow={isLargeRow}
+                  imageUrl={`${IMAGE_BASE_URL}${
+                    isLargeRow ? movie.poster_path : movie.backdrop_path
+                  }`}
+                  mediaType={movie.media_type || "movie"}
+                />
+              ))
+            ) : (
+              <div className="row__empty">
+                <p>No movies available</p>
+              </div>
+            )}
           </div>
         )}
       </div>

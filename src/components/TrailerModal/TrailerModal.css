@@ -116,13 +116,12 @@
 .trailer-modal__video-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
   flex: 1;
-  min-height: 500px;
   background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .trailer-modal__video-wrapper iframe {
@@ -130,6 +129,7 @@
   height: 100%;
   border: none;
   display: block;
+  object-fit: contain;
 }
 
 /* Footer Section */
