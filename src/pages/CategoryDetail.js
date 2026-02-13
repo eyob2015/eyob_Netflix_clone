@@ -181,18 +181,26 @@ function CategoryDetail() {
       {/* Movies Grid */}
       <div className="category-detail__container">
         <div className="category-detail__grid">
-          {movies.map((movie) => (
-            <div
-              key={`${movie.id}-${movie.media_type || mediaType}`}
-              className="category-detail__card-wrapper"
-            >
-              <MovieCard
-                movie={movie}
-                mediaType={movie.media_type || mediaType}
-                imageUrl={`${IMAGE_BASE_URL}${movie.poster_path || movie.backdrop_path}`}
-              />
-            </div>
-          ))}
+          {movies.map((movie) => {
+            const isBackdrop = !movie.poster_path && movie.backdrop_path;
+            const wrapperClass = isBackdrop
+              ? 'category-detail__card-wrapper category-detail__card-wrapper--landscape'
+              : 'category-detail__card-wrapper category-detail__card-wrapper--portrait';
+
+            return (
+              <div
+                key={`${movie.id}-${movie.media_type || mediaType}`}
+                className={wrapperClass}
+              >
+                <MovieCard
+                  movie={movie}
+                  mediaType={movie.media_type || mediaType}
+                  imageUrl={`${IMAGE_BASE_URL}${movie.poster_path || movie.backdrop_path}`}
+                  isLandscape={isBackdrop}
+                />
+              </div>
+            );
+          })}
         </div>
 
         {/* Loading indicator */}

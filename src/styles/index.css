@@ -26,6 +26,13 @@ body {
   overflow-x: hidden;
 }
 
+/* Avoid forcing scroll chaining or expensive paint on the root element */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

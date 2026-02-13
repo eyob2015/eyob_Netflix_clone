@@ -97,32 +97,43 @@
 }
 
 .row__posters {
-  display: flex;
-  overflow-y: hidden;
-  overflow-x: scroll;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
   gap: 12px;
   padding: 12px 0;
-  scroll-behavior: smooth;
   width: 100%;
   box-sizing: border-box;
+  align-items: start;
 }
 
-.row__posters::-webkit-scrollbar {
-  height: 8px;
+/* Ensure movie cards fill grid cells so we consistently get 10 per row */
+.row__posters .movie-card {
+  width: 100%;
 }
 
-.row__posters::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
+/* Responsive fallbacks */
+@media (max-width: 1200px) {
+  .row__posters {
+    grid-template-columns: repeat(8, 1fr);
+  }
 }
 
-.row__posters::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #e50914 0%, #c4061b 100%);
-  border-radius: 4px;
+@media (max-width: 992px) {
+  .row__posters {
+    grid-template-columns: repeat(6, 1fr);
+  }
 }
 
-.row__posters::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #f20817 0%, #d4071f 100%);
+@media (max-width: 768px) {
+  .row__posters {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .row__posters {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .row__loading {

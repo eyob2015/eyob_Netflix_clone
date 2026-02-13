@@ -104,9 +104,14 @@ const Row = React.memo(
                   key={movie.id}
                   movie={movie}
                   isLargeRow={isLargeRow}
-                  imageUrl={`${IMAGE_BASE_URL}${
-                    isLargeRow ? movie.poster_path : movie.backdrop_path
-                  }`}
+                  imageUrl={
+                    // Use appropriately sized images to reduce payload
+                    (() => {
+                      const size = isLargeRow ? "/w500" : "/w342";
+                      const path = isLargeRow ? movie.poster_path : movie.backdrop_path;
+                      return path ? IMAGE_BASE_URL.replace("/original", size) + path : null;
+                    })()
+                  }
                   mediaType={movie.media_type || "movie"}
                 />
               ))

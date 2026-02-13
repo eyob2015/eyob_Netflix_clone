@@ -145,6 +145,7 @@ function MovieDetail() {
             <img
               className="movie-detail__poster"
               src={`${IMAGE_BASE_URL}${movie?.poster_path}`}
+              loading="lazy"
               alt={getTitleOrName()}
             />
           </div>

@@ -8,10 +8,12 @@ import "./MovieCard.css";
  * with optimized image loading and navigation to detail page
  */
 const MovieCard = React.memo(
-  ({ movie, isLargeRow, imageUrl, mediaType = "movie" }) => {
+  ({ movie, isLargeRow, imageUrl, mediaType = "movie", isLandscape = false }) => {
     const navigate = useNavigate();
     const [imageLoaded, setImageLoaded] = React.useState(false);
     const [imageError, setImageError] = React.useState(false);
+    const imgRef = React.useRef(null);
+    const [shouldLoad, setShouldLoad] = React.useState(false);
 
     const handleCardClick = (e) => {
       e.preventDefault();
@@ -21,12 +23,38 @@ const MovieCard = React.memo(
     // Fallback image if no URL provided
     const showFallback = !imageUrl || imageError;
 
+    // IntersectionObserver: only load image when card is visible
+    React.useEffect(() => {
+      if (!imgRef.current) return;
+      if (shouldLoad) return;
+      let observer;
+      try {
+        observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                setShouldLoad(true);
+                observer.disconnect();
+              }
+            });
+          },
+          { rootMargin: "200px" }
+        );
+        observer.observe(imgRef.current);
+      } catch (e) {
+        // Fallback: load immediately if IntersectionObserver not supported
+        setShouldLoad(true);
+      }
+
+      return () => {
+        if (observer && observer.disconnect) observer.disconnect();
+      };
+    }, [imgRef, shouldLoad]);
+
     return (
       <div className="movie-card" onClick={handleCardClick}>
         <div
-          className={`movie-card__poster ${
-            isLargeRow ? "movie-card__poster--large" : ""
-          }`}
+          className={`movie-card__poster ${isLargeRow ? "movie-card__poster--large" : ""} ${isLandscape ? 'movie-card__poster--landscape' : ''}`}
         >
           {!imageLoaded && !showFallback && <div className="movie-card__skeleton" />}
           {showFallback ? (
@@ -42,14 +70,14 @@ const MovieCard = React.memo(
             </div>
           ) : (
             <img
-              className={`movie-card__image ${
-                imageLoaded ? "movie-card__image--loaded" : ""
-              }`}
-              src={imageUrl}
+              ref={imgRef}
+              className={`movie-card__image ${imageLoaded ? "movie-card__image--loaded" : ""}`}
+              src={shouldLoad ? imageUrl : undefined}
               alt={movie?.name || movie?.title || "Movie"}
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageError(true)}
               loading="lazy"
+              decoding="async"
             />
           )}
           <div className="movie-card__overlay">

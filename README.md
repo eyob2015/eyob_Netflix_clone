@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+## eyob_Netflix_clone — Lightweight React Netflix-style UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a React single-page application showcasing a Netflix-like UI: banner, rows of movie cards, detail pages and trailer playback.
 
-## Available Scripts
+Changes in this workspace:
+- Banner PLAY button opens a modal trailer (YouTube) with replay/close controls.
+- Navigation improved with a responsive hamburger menu and reduced scroll jank.
+- Rows layout updated to show consistent poster columns.
 
-In the project directory, you can run:
+Prerequisites
+-----------
+- Node.js >= 18 and npm.
+- A TMDB API key (or whichever movie API you use) set as `REACT_APP_API_KEY` in a local `.env` file.
 
-### `npm start`
+Quick start
+-----------
+1. Install dependencies:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+npm install
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. Add your environment variable in `.env`:
 
-### `npm test`
+```
+REACT_APP_API_KEY=your_api_key_here
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Run development server:
 
-### `npm run build`
+```bash
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Production build
+----------------
+Create an optimized production build:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm run build
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The static output will be in the `build/` folder. Serve it with any static host (Netlify, Vercel, Firebase Hosting, GitHub Pages, AWS S3 + CloudFront, etc.).
 
-### `npm run eject`
+Recommended deployment (quick): Netlify or Vercel
+- Drag the `build/` folder to Netlify's deploy UI or connect the repo and set build command `npm run build` and publish directory `build`.
+- On Vercel, import the repo and set `build` to `npm run build`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Production checklist
+--------------------
+- Ensure `REACT_APP_API_KEY` is configured in your host's environment variables (do not commit it).
+- Remove unused dependencies (this repo has been cleaned of server-only packages). If you maintain a separate backend, host it separately and point the frontend to the API URL.
+- Use a CDN for large image assets or enable caching headers for the `build/` folder.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Cleaning dependencies
+---------------------
+This project is a frontend SPA. Server packages (express, body-parser, cors, mysql2, bcrypt, etc.) were removed from `dependencies` and testing libraries moved to `devDependencies`. Run `npm prune` and `npm install` after pulling changes to update `node_modules`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Notes
+-----
+- Trailer playback uses `react-youtube` and the YouTube JS API to minimize suggested videos and show replay/close controls when the video ends.
+- Row layout now uses CSS grid for consistent columns — adjust breakpoints in `src/components/Row/Row.css`.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Want me to deploy this to Netlify or Vercel for you? Provide the repo access or let me know which provider you prefer and I'll prepare deployment settings.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

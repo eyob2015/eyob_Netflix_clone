@@ -78,17 +78,29 @@
 
 .category-detail__card-wrapper {
   position: relative;
-  aspect-ratio: 2 / 3;
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   background: rgba(30, 30, 30, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .category-detail__card-wrapper:hover {
   transform: scale(1.05);
   z-index: 10;
+}
+
+/* Portrait poster (default) */
+.category-detail__card-wrapper--portrait {
+  aspect-ratio: 2 / 3;
+}
+
+/* Landscape/backdrop items */
+.category-detail__card-wrapper--landscape {
+  aspect-ratio: 16 / 9;
 }
 
 /* Loading Indicator */

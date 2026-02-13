@@ -5,13 +5,17 @@
   position: relative;
   display: flex;
   align-items: center;
-  background-attachment: fixed;
+  /* `background-attachment: fixed` causes repaint on scroll and can lead to jank.
+     Use default scrolling and promote the element to its own layer for smoother scrolling. */
+  background-attachment: scroll;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .banner--loading {
